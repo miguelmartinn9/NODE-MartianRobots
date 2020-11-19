@@ -24,6 +24,8 @@ var boardCoordinatesArray = getBoardCoordinates(upperRightCoordinatesString);
 var robotString = "garbage value"
 var robotsPosition = []; //This will be an array of array's
 var instructionsSet = []; //This will be an array with the instructions
+var lostRobots = [];
+var lostRobotsCounter = 0;
 var robotCounter = 0;
 var instructionsCounter = 0;
 
@@ -44,9 +46,10 @@ function printFinalPositions (robotPosition, robotInstruction) {
 	var currentOrientation = robotPosition[2];
 	var wasLostString = "";
 	for (var i = 0; i < robotInstruction.length; i++) {
-		console.log("Evaluating instruction "+ i +": " + robotInstruction[i] + "\nWith orientation: " + currentOrientation + "\n");
 		switch(robotInstruction[i]) {
 			case 'F':
+				if (wereRobotsLostHere(robotPosition)) 
+					break;
 				if (currentOrientation === 'N')
 					robotPosition[1]++;
 				if (currentOrientation === 'S')
@@ -56,7 +59,7 @@ function printFinalPositions (robotPosition, robotInstruction) {
 				if (currentOrientation === 'W')
 					robotPosition[0]--;
 				if (isRobotLost(robotPosition)) {
-					console.log("Entra en el IF DE LOST");
+					lostRobots[lostRobotsCounter++] = robotPosition;
 					i = robotInstruction.length;
 					wasLostString = "LOST";
 				}
@@ -102,31 +105,40 @@ function printFinalPositions (robotPosition, robotInstruction) {
 	console.log(robotPosition[0] + " " + robotPosition[1] + " " + currentOrientation + " " + wasLostString);
 }
 
+function wereRobotsLostHere (robotPosition) { 
+	for(var i = 0; i < lostRobotsCounter; i++) {
+		console.log("Comparing:")
+		console.log("Pos 0: " + robotPosition[0] + " and " + lostRobots[i][0])
+		console.log("Pos 1: " + robotPosition[1] + " and " + lostRobots[i][1])
+		console.log("Pos 2: " + robotPosition[2] + " and " + lostRobots[i][2])
+		if (robotPosition[0] === lostRobots[i][0]
+			&& robotPosition[1] === lostRobots[i][1]
+			&& robotPosition[2] === lostRobots[i][2]) {
+				return true;
+			}
+	}
+	return false;
+}
+
 function isRobotLost (robotPosition) {
 	if (robotPosition[0] > boardCoordinatesArray[0]) {
-		console.log("Entra1");
 		robotPosition[0]--;
 		return true;
 	}
 	if (robotPosition[0] < 0) {
-		console.log("Entra2");
 		robotPosition[0] = 0;
 		return true;
 	}
 
 	if (robotPosition[1] > boardCoordinatesArray[1]) {
-		console.log("Entra3");
 		robotPosition[1]--;
 		return true;
 	}
 	if (robotPosition[1] < 0) {
-		console.log("Entra4");
 		robotPosition[1] = 0;
 		return true;
 	}
 
-	console.log("Coordenada X1: " + robotPosition[0]);
-	console.log("Coordenada Y1: " + robotPosition[1]);
 	return false;
 }
 
