@@ -48,7 +48,7 @@ function printFinalPositions (robotPosition, robotInstruction) {
 	for (var i = 0; i < robotInstruction.length; i++) {
 		switch(robotInstruction[i]) {
 			case 'F':
-				if (wereRobotsLostHere(robotPosition)) 
+				if (wereRobotsLostHere(robotPosition, currentOrientation)) 
 					break;
 				if (currentOrientation === 'N')
 					robotPosition[1]++;
@@ -105,15 +105,11 @@ function printFinalPositions (robotPosition, robotInstruction) {
 	console.log(robotPosition[0] + " " + robotPosition[1] + " " + currentOrientation + " " + wasLostString);
 }
 
-function wereRobotsLostHere (robotPosition) { 
+function wereRobotsLostHere (robotPosition, currentOrientation) { 
 	for(var i = 0; i < lostRobotsCounter; i++) {
-		console.log("Comparing:")
-		console.log("Pos 0: " + robotPosition[0] + " and " + lostRobots[i][0])
-		console.log("Pos 1: " + robotPosition[1] + " and " + lostRobots[i][1])
-		console.log("Pos 2: " + robotPosition[2] + " and " + lostRobots[i][2])
 		if (robotPosition[0] === lostRobots[i][0]
 			&& robotPosition[1] === lostRobots[i][1]
-			&& robotPosition[2] === lostRobots[i][2]) {
+			&& currentOrientation === lostRobots[i][2]) {
 				return true;
 			}
 	}
