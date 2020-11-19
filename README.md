@@ -4,10 +4,10 @@
 * [Project Details](#details)
 
 ## General info
-This project emulates how a robot direction controller would work.
+This project emulates how a robot direction controller would work.<br />
 The input consists of 2 parts:
 1. Two integers to set the dimensions of the rectangle
-2. Robots positions and Instructions
+2. Robots positions and Instructions<br />
 The output is simply the las position of the robot plus whether it was lost.
 	
 ## How to run
